@@ -1,10 +1,4 @@
-import React, { useState } from "react";
-
-interface Activity {
-  id: number;
-  title: string;
-  content: string;
-}
+import { useState } from "react";
 
 const activities: Activity[] = [
   {
@@ -24,36 +18,32 @@ const activities: Activity[] = [
   },
 ];
 
-const ActivityBox: React.FC<Activity> = ({ id, title, content }) => {
-  const [isContentVisible, setIsContentVisible] = useState(false);
+type ActivityBoxType = {
+  id: number;
+  title: string;
+  content: string;
+};
+
+const ActivityBox: ActivityBoxType = ({ id, title, content }) => {
+  const [isOpen, setIsOpen] = useState(true);
 
   return (
-    <div className="p-4 border mb-4 cursor-pointer">
-      <div>
-        <div
-          className="font-bold"
-          onClick={() => setIsContentVisible(!isContentVisible)}
-        >
-          {title}
-        </div>
+    <div>
+      <div className="">
+        <div onClick={() => setIsOpen(!isOpen)}>{title}</div>
 
-        {isContentVisible && <div className="mt-2">{content}</div>}
+        {isOpen && <div>{content}</div>}
       </div>
     </div>
   );
 };
 
-const Test: React.FC = () => {
-  const [showAllContent, setShowAllContent] = useState(false);
+const Test = () => {
   return (
-    <div>
-      <div className="flex flex-col items-center mt-10">
-        <div className="flex justify-center">
-          {activities.map((activity) => (
-            <ActivityBox key={activity.id} {...activity} />
-          ))}
-        </div>
-      </div>
+    <div className="flex justify-between">
+      {activities.map((activity, index) => {
+        return <ActivityBox key={index} {...activity} />;
+      })}
     </div>
   );
 };
