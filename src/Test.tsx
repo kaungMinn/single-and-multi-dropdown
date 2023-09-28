@@ -1,5 +1,11 @@
 import React, { useState } from "react";
 
+interface Activity {
+  id: number;
+  title: string;
+  content: string;
+}
+
 const activities: Activity[] = [
   {
     id: 1,
@@ -18,39 +24,36 @@ const activities: Activity[] = [
   },
 ];
 
-type Props = {
-  title: string;
-  content: string;
-  isOpen: boolean;
-  setIsOpen: () => {};
-}[];
-
-const Test = () => {
-  const [isOpen, setIsOpen] = useState(false);
+const ActivityBox: React.FC<Activity> = ({ id, title, content }) => {
+  const [isContentVisible, setIsContentVisible] = useState(false);
 
   return (
-    <div>
-      <div className="flex justify-around">
-        {activities.map((activity) => (
-          <Activity
-            title={activity.title}
-            content={activity.content}
-            isOpen={isOpen}
-            setIsOpen={setIsOpen}
-          />
-        ))}
+    <div className="p-4 border mb-4 cursor-pointer">
+      <div>
+        <div
+          className="font-bold"
+          onClick={() => setIsContentVisible(!isContentVisible)}
+        >
+          {title}
+        </div>
+
+        {isContentVisible && <div className="mt-2">{content}</div>}
       </div>
     </div>
   );
 };
 
-const Activity = (props: Props) => {
-  const { title, content, isOpen, setIsOpen } = props;
+const Test: React.FC = () => {
+  const [showAllContent, setShowAllContent] = useState(false);
   return (
-    <div onClick={() => setIsOpen(!isOpen)}>
-      <div>{title}</div>
-
-      {isOpen && <div>{content}</div>}
+    <div>
+      <div className="flex flex-col items-center mt-10">
+        <div className="flex justify-center">
+          {activities.map((activity) => (
+            <ActivityBox key={activity.id} {...activity} />
+          ))}
+        </div>
+      </div>
     </div>
   );
 };
